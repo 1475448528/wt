@@ -1,8 +1,6 @@
 /**
- * 测试HTML
- * 网址：
- * http://localhost:8080/FirstWeb/servlet/myth  一切次啊刚刚开始
- */
+ * 可获取参数的一个Servlet
+ */ 
 package First;
 
 import java.io.IOException;
@@ -13,12 +11,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class myth extends HttpServlet {
+/**
+ * 类的前面 可以有一行类似于： @WebServlet("/hello.view")  格式的语句
+ *    这就是Servlet的标注，容器会自动读取当中的信息  相当于配置 *.XML 文件里的mapping设置，只是为了设置URL，达到同样的效果
+ * @author lenovo
+ *
+ */
+
+
+
+public class Hello extends HttpServlet {
 
 	/**
 	 * Constructor of the object.
 	 */
-	public myth() {
+	public Hello() {
 		super();
 	}
 
@@ -43,23 +50,19 @@ public class myth extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		response.setContentType("text/html;charset=UTF-8");
+		response.setContentType("text/html;charset=UTF-8");//设置内容类型  
 		PrintWriter out = response.getWriter();
+		
+/**如果没有把参数传入，就会实现默认的HTML文件展现出来 即 ：This is ....*/
+		String name = request.getParameter("name");//获取指定名字的参数的值
+		
 		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
 		out.println("<HTML>");
 		out.println("  <HEAD><TITLE>A Servlet</TITLE></HEAD>");
 		out.println("  <BODY>");
+		out.println("<h1> Hello "+name+"</h1>");
 		
-		out.println("<pre>Myth   :     我的网页</pre>");
-//		out.println("<h1>1级标题</h1>");
-//		out.println("<h2>2级标题</h2>");
-//		out.println("<h3>3级标题</h3>");
-//		out.println("<h4>4级标题</h4>");
-//		out.println("<h5>5级标题</h5>");
-//		out.println("<h6>6级标题</h6>");
-		
-		out.println(new java.util.Date());//获取当前时间
-		out.println("");
+
 		
 		out.println("  </BODY>");
 		out.println("</HTML>");
@@ -82,13 +85,14 @@ public class myth extends HttpServlet {
 
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
+		
+		
 		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
 		out.println("<HTML>");
 		out.println("  <HEAD><TITLE>A Servlet</TITLE></HEAD>");
 		out.println("  <BODY>");
 		out.print("    This is ");
-		out.print(this.getClass());
-		out.println(", using the POST method");
+		out.println(", using the POST");
 		out.println("  </BODY>");
 		out.println("</HTML>");
 		out.flush();
