@@ -3,27 +3,52 @@
     xmlns="http://java.sun.com/xml/ns/javaee"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+   <!-- 这样的文件叫做部署描述文件（Deployment Descriptor） 简称DD文件-->
+   
+<!--一个Servlet在Web.xml中会有三个名称设置
+      <url-pattern> :设置的逻辑名称
+      <servlet-name> 注册的Servlet名称
+      <servlet-class>设置的实体类名称-->
+   
+   
+<!-- 先 定义一个个的服务 -->
   <servlet>
-    <description>This is the description of my J2EE component</description>
+    <description>This is the description of my J2EE component</description><!-- <description>是网站描述的意思，用于填写网站页面内容的描述。 -->
     <display-name>This is the display name of my J2EE component</display-name>
+    <!-- 当你使用编辑器编辑该文档的时候，在title处需要显示的名称。你可以改变这个名字，然后用编辑器分别打开，可以看到title的变化。 -->
     <servlet-name>SS</servlet-name>
     <servlet-class>SS</servlet-class>
   </servlet>
+  
   <servlet>
     <description>This is the description of my J2EE component</description>
     <display-name>This is the display name of my J2EE component</display-name>
     <servlet-name>myth</servlet-name>
-    <servlet-class>First.myth</servlet-class>
+    <servlet-class>First.myth</servlet-class><!-- 包.类 -->
+  </servlet>
+  
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>Hello</servlet-name>
+    <servlet-class>First.Hello</servlet-class>
   </servlet>
 
 
+<!-- 再设置好  （服务的名字） 和（浏览器访问时的目录）之间 的映射 （就是设置访问时的URL的格式）-->
   <servlet-mapping>
     <servlet-name>SS</servlet-name>
     <url-pattern>/servlet/SS</url-pattern>
+    <!-- url-parrern里面放的是servlet访问路径,这个标签是在servlet-mapping里，这个里面还有个servlet-name,根据这个标签的名字服务器会找到被映射的同名servlet的字节码文件  -->
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>myth</servlet-name>
     <url-pattern>/servlet/myth</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Hello</servlet-name>
+    <url-pattern>/hello.view</url-pattern>
+  </servlet-mapping>
+
 
 </web-app>
