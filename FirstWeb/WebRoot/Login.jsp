@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>My One.jsp </title>
+    <title>My JSP 'Login.jsp' starting page</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -23,14 +23,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-  <h4>you can see this page ,it is mark the kill you already complete use</h4>
-    This is my One.JSP page. <br>
-    <br><br>
-    一个表格：
-    <table>
-    <tr><td style="width: 36px; height: 20px">0</td><td style="width: 52px; height: 38px">1</td><td style="height: 41px; width: 55px; ">79</td></tr>
-    <tr><td>0</td><td>1</td><td style="height: 32px; width: 49px; ">666</td></tr>
-    </table>
-    <a></a>
+  <form method="post" action="servlet/Logins" onsubmit="return isYes()">
+   <tr><td>用户名：<input type="text"name="user"></td></tr>
+   <tr><td>密码：<input type="password"name="password"></td></tr>
+   <tr><td><input type="submit" name="login"value="登录"></td></tr>
+  </form>
+    This is my Login.jsp page<br>
+    
+    <h4>功能就是发送用户名和密码，action到Servlet然后展示出来<h4>
   </body>
 </html>
