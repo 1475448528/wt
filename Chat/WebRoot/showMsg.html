@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>showMsg.html</title>
+	
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+  </head>
+  <script>/*显示聊天内容*/
+  function GetData(url){
+  addr="class_method.jsp?action=showMsg";//递归
+  try{
+    DataLoad.src = addr;
+  }catch(e){
+   return false;
+  }{
+    timeoutid=setTimeout("GetData()",2000);//反复递归调用自己，时差是2000，等效于反复显示内容
+  }
+  }
+  </script>
+  <script id="DataLoad" language="JavaScript"type="text/javascript"defer></script>
+  <body onLoad="javascript:GetData();"><!-- 页面装载时调用JS事件 -->
+  <span id=loadContent> 请稍候片刻，数据即可载入。。。。</span>
+  <!-- 标签可以动态改变其中的内容 -->
+    This is my HTML page. <br>
+  </body>
+</html>
