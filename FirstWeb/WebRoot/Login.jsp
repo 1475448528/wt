@@ -28,8 +28,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    <tr><td>密码：<input type="password"name="password"></td></tr>
    <tr><td><input type="submit" name="login"value="登录"></td></tr>
   </form>
-    This is my Login.jsp page<br>
-    
+
     <h4>功能就是发送用户名和密码，action到Servlet然后展示出来<h4>
+    This is my Login.jsp page<br>
   </body>
 </html>

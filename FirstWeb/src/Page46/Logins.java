@@ -48,16 +48,16 @@ public class Logins extends HttpServlet {
 		
 		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
 		out.println("<HTML>");
-		out.println("  <HEAD><TITLE>A Servlet</TITLE></HEAD>");
+		out.println("  <HEAD><TITLE>登录成功</TITLE></HEAD>");
 		out.println("  <BODY>");
 		
 		if(name.equals("myth") && pass.equals("11")){
-			
+			out.print("<h2>Login Suessful.....</h2>");
 			out.print("<img src='http://images.517best.com/UploadFiles/images/s/20120704/20120704195258320107323.jpg'width='600'height='161'> ");
-			out.print("<br>Login Suessful");
+			
 		}else{
 			//失败，关于这个 报错的弹窗  功能提问都是10年左右的，难道这个已经失去潮流了---
-			response.getWriter().print("<script lanuage='javascript'>alert('Password Wrong ! ! ');window.location.href='/FirstWeb/imageLogin.jsp';</script>;");
+//			response.getWriter().print("<script lanuage='javascript'>alert('Password Wrong ! ! ');window.location.href='/FirstWeb/imageLogin.jsp';</script>;");
 //		    System.out.println("lose");
 			response.sendRedirect("/FirstWeb/imageLogin.jsp");
 			
