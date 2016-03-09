@@ -1,5 +1,5 @@
 /**
- * 登录页面
+ * 登录页面 Servlet
  */
 package Page46;
 
@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class Logins extends HttpServlet {
 
@@ -41,28 +42,12 @@ public class Logins extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		response.setContentType("text/html;charset=UTF-8");
+		response.setContentType("text/html;charset=UTF-8");//设置输出为UTF-8编码，可以输出中文
+		
 		PrintWriter out = response.getWriter();
-		String name=request.getParameter("user");
-		String pass = request.getParameter("password");
 		
-		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
-		out.println("<HTML>");
-		out.println("  <HEAD><TITLE>登录成功</TITLE></HEAD>");
-		out.println("  <BODY>");
-		
-		if(name.equals("myth") && pass.equals("11")){
-			out.print("<h2>Login Suessful.....</h2>");
-			out.print("<img src='http://images.517best.com/UploadFiles/images/s/20120704/20120704195258320107323.jpg'width='600'height='161'> ");
-			
-		}else{
-			//失败，关于这个 报错的弹窗  功能提问都是10年左右的，难道这个已经失去潮流了---
-//			response.getWriter().print("<script lanuage='javascript'>alert('Password Wrong ! ! ');window.location.href='/FirstWeb/imageLogin.jsp';</script>;");
-//		    System.out.println("lose");
-			response.sendRedirect("/FirstWeb/imageLogin.jsp");
-			
-		}
-		out.println("  </BODY>");
+		out.println("<h1>当代</h1>");
+		out.println("</BODY>");
 		out.println("</HTML>");
 		out.flush();
 		out.close();
@@ -81,20 +66,42 @@ public class Logins extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		response.setContentType("text/html");
+		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		
+
+		request.setCharacterEncoding("UTF-8");//接收中文的方法，就是在处理request之前设置编码为utf-8
+		
+		
 		String user=request.getParameter("user");
-		out.println("<h3>user:"+user+"</h3>");
 		String pass=request.getParameter("password");
-		out.println("<h3>password:"+pass+"</h3>");
 		
 		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
 		out.println("<HTML>");
-		out.println("  <HEAD><TITLE>A Servlet</TITLE></HEAD>");
+		out.println("  <HEAD><TITLE>Login yanzheng</TITLE></HEAD>");
 		out.println("  <BODY>");
 		
-		out.println("  </BODY>");
+		out.println("<h3>user:</h3>"+user+"");
+		out.println("<h3>password:</h3>"+pass+"");
+		
+		//验证用户名和密码：
+		if(user.equals("旷小希") && pass.equals("11")){
+			//将用户登录成功的信息写入Session里面，防止用户直接输入URL来访问到我登录之后的页面
+			
+			
+			out.print("<h2>Login Suessful.....</h2>");
+			out.print("<img src='http://images.517best.com/UploadFiles/images/s/20120704/20120704195258320107323.jpg'width='600'height='161'> ");
+			
+		}else{
+			//失败，关于这个 报错的弹窗  功能提问都是10年左右的，难道这个已经失去潮流了---
+//			response.getWriter().print("<script type='text/javascript' lanuage='javascript'>alert('Password Wrong ! ! ');window.location.href='/FirstWeb/imageLogin.jsp';</script>;");
+//		    System.out.println("lose");
+			response.sendRedirect("/FirstWeb/imageLogin.jsp");
+			
+			
+		}
+		
+		out.println("</BODY>");
 		out.println("</HTML>");
 		out.flush();
 		out.close();
@@ -109,4 +116,51 @@ public class Logins extends HttpServlet {
 		// Put your code here
 	}
 
+	
 }
+
+// Web调用数据库 和普通的类调用数据库不同，可能有特别的地方，暂时不会连接Mysql数据库
+/*PreparedStatement ps = null;
+Connection cn = null;
+ResultSet rs = null;
+
+try{
+	//初始化我们的对象
+	//1 加载驱动
+	Class.forName("com.mysql.jdbc.Driver");
+	//2 得到连接
+	cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Login?user=myth&password=ad&userUnicode=true&characterEncoding=UTF8");
+	//创建一个preparedStatement对象用于发送
+	ps=cn.prepareStatement("select * from user");
+	rs = ps.executeQuery();
+	System.out.println("Name\tPassword");
+	while(rs.next()){
+		System.out.println(rs.getString(1)+" "+rs.getString(2));
+	}
+	
+}catch(Exception e){
+	e.printStackTrace();
+	System.out.println("驱动加载错误");
+}finally {
+	//先开后关 关闭资源
+		try {
+			if(rs!=null)
+			    rs.close();
+			if(ps!=null)
+				ps.close();
+			if(cn!=null)
+				cn.close();
+		} catch (SQLException e) { 
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("资源关闭异常");
+		}
+	
+}
+*/
+
+
+
+
+
+
