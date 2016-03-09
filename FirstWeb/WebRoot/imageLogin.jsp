@@ -20,14 +20,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	   <script type="text/javascript" language="javascript">
 	   function fade (){
-	   if(((document.getElementById("user")).value)=="myth") document.login.submit();
+	   if(((document.getElementById("user")).value)=="旷小希" && ((document.getElementById("password")).value)=="11") document.login.submit();
 	   else{
 	   alert("用户名或密码错误！！");
 	   return true;
 	   }
 	   //document.getElementsByName("user").value
 	   
-	   
+	   document.login.submit();
 	   //用id才能获取到那个值，name就会说未定义，获取不到
 	   //alert((document.getElementById("user")).value);
 	   }
@@ -37,7 +37,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
   <!-- border="1px" bordercolor="red" 加上帮助的分割线 -->
   
-  <form action="servlet/Logins" name="login" onsubmit="fade()">
+  <form action="servlet/Logins" name="login" onsubmit="fade()" method="post">
   <table background="images/Local.png" width="960" height="720">
   
   <tr>
@@ -60,7 +60,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      <td ></td>
 <!-- 密码窗口 -->
      <td style="border:none;color:none;background:none; height:11px ;width:27px">
-          <input type="password"name="password"size="26">
+          <input type="password"name="password"id="password"size="26">
      </td>
      <td ></td>
   </tr>
