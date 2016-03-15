@@ -1,7 +1,5 @@
-package One;
-/**
- * 重定向：request.sendRedirect();//URL的pattern模式地址
- */
+package Blog;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -10,12 +8,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class main extends HttpServlet {
+public class AddFail extends HttpServlet {
 
 	/**
 	 * Constructor of the object.
 	 */
-	public main() {
+	public AddFail() {
 		super();
 	}
 
