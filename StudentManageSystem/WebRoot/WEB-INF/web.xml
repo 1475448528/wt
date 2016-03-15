@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0"
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>compare</servlet-name>
+    <servlet-class>compare</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>uploadDo</servlet-name>
+    <servlet-class>upload.uploadDo</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>DataManage</servlet-name>
+    <servlet-class>DataManage</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>Logining</servlet-name>
+    <servlet-class>Logining</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>BlogMain</servlet-name>
+    <servlet-class>Blog.BlogMain</servlet-class>
+  </servlet>
+
+
+
+
+
+  <servlet-mapping>
+    <servlet-name>compare</servlet-name>
+    <url-pattern>/servlet/compare</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>uploadDo</servlet-name>
+    <url-pattern>/servlet/uploadDo</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DataManage</servlet-name>
+    <url-pattern>/servlet/DataManage</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Logining</servlet-name>
+    <url-pattern>/servlet/Logining</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>BlogMain</servlet-name>
+    <url-pattern>/servlet/BlogMain</url-pattern>
+  </servlet-mapping>
+
+</web-app>
