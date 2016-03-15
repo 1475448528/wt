@@ -1,23 +1,19 @@
-/**
- * 取得并显示浏览器送出的 标头信息（键值对）
- *   
- */
-package Session;
+package Blog;
+
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class HeaderServlet extends HttpServlet {
+public class LoginSuccess extends HttpServlet {
 
 	/**
 	 * Constructor of the object.
 	 */
-	public HeaderServlet() {
+	public LoginSuccess() {
 		super();
 	}
 
@@ -44,19 +40,15 @@ public class HeaderServlet extends HttpServlet {
 
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
+		String name = request.getParameter("name");
+		
 		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
 		out.println("<HTML>");
-		out.println("  <HEAD><TITLE>HeaderServlet</TITLE></HEAD>");
+		out.println("  <HEAD><TITLE>A Servlet</TITLE></HEAD>");
 		out.println("  <BODY>");
 		
-		out.println("<h1> HeaderServlet at "+request.getContextPath()+"</h1>");//取得应用程序的环境路径
-		Enumeration<String>names = request.getHeaderNames();//取得所有标头的名称
-		
-		while(names.hasMoreElements()){
-			String name = names.nextElement();
-			out.println(name+":"+request.getHeader(name)+"<br>");//取得标头值
-		}
-		out.println("<h2>这是一个查看浏览器送出的标头信息的Servlet类</h2>");
+		out.println("<h3>用户 "+name+" 你好</h3>");
+		out.println("欢迎登录微博");
 		out.println("  </BODY>");
 		out.println("</HTML>");
 		out.flush();

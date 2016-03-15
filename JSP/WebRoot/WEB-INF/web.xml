@@ -39,6 +39,33 @@
     <servlet-name>LoginCl</servlet-name>
     <servlet-class>Session.LoginCl</servlet-class>
   </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>BlogLogins</servlet-name>
+    <servlet-class>Blog.BlogLogins</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>LoginSuccess</servlet-name>
+    <servlet-class>Blog.LoginSuccess</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>LoginFail</servlet-name>
+    <servlet-class>Blog.AddFail</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>AddControl</servlet-name>
+    <servlet-class>Blog.AddControl</servlet-class>
+  </servlet>
+
+
+
 
 
 
@@ -66,6 +93,22 @@
   <servlet-mapping>
     <servlet-name>LoginCl</servlet-name>
     <url-pattern>/servlet/LoginCl</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>BlogLogins</servlet-name>
+    <url-pattern>/servlet/BlogLogins</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>LoginSuccess</servlet-name>
+    <url-pattern>/servlet/LoginSuccess</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>LoginFail</servlet-name>
+    <url-pattern>/servlet/AddFail</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AddControl</servlet-name>
+    <url-pattern>/servlet/AddControl</url-pattern>
   </servlet-mapping>
 
 <!-- 设置该项目的Session的生存时间 -->

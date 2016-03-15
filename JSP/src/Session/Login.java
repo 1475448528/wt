@@ -1,5 +1,9 @@
 package Session;
 /**
+ * 
+ *   这是一个登录界面
+ *   
+ *   
  * 刷新一次才会创建一个Session实例
  *  Session也可以用来发送数据（保密性高的数据，）
  */
@@ -63,7 +67,7 @@ public class Login extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
 		out.println("<HTML>");
-		out.println("  <HEAD><TITLE>A Servlet</TITLE></HEAD>");
+		out.println("  <HEAD><TITLE>Login JDBC</TITLE></HEAD>");
 		out.println("  <BODY>");
 //		
 		//得到和request相关联的session，如果没有就创建一个
@@ -75,13 +79,21 @@ public class Login extends HttpServlet {
 		
 		String sessionId = pu.getId();
 		
+		String re = request.getParameter("error");
 		
 		
+		if(re!=null){
+			out.println("<h2>用户名或者密码错误，请重新输入！！</h2>");
+		}
 		out.println("Login 的id是："+sessionId);	
-		out.println("<form action=Session1 method=post>");
-		out.println("用户名：<input type=password name=username><br>");
+		
+//		out.println("<form action=Session1 method=post>");//验证一下Session
+		out.println("<form action=LoginCl method=post>");//测试数据库
+		
+		out.println("用户名：<input type=text name=username><br>");
 		out.println("密码：<input type=password name=pass><br>");
 		out.println("<input type=submit value=Login><br>");
+		
 		out.println("  </BODY>");
 		out.println("</HTML>");
 		out.flush();
