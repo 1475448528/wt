@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -71,15 +72,18 @@ public class BlogLogins extends HttpServlet {
 	 * @throws IOException if an error occurred
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {response.setContentType("text/html");
+			throws ServletException, IOException {
+		
+		    response.setContentType("text/html;charset=utf-8");
 			PrintWriter out = response.getWriter();
 			out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
 			out.println("<HTML>");
 			out.println("  <HEAD><TITLE>Logins</TITLE></HEAD>");
 			out.println("  <BODY>");
 			
-			String username = request.getParameter("user");
+			String username = request.getParameter("user");//这是接受的参数
 			String passwords = request.getParameter("password");
+			String auto = request.getParameter("auto");
 			
 			Connection cn=null;
 			PreparedStatement ps=null;
@@ -88,6 +92,7 @@ public class BlogLogins extends HttpServlet {
 			String user="myth" ;
 			String password="ad";
 			
+			boolean flag=true;
 			//连接数据库
 			try{
 				
@@ -101,7 +106,8 @@ public class BlogLogins extends HttpServlet {
 //				while(rs.next()){
 //					out.println(rs.getString(1)+"\t\t "+rs.getString(2)+"\t\t"+rs.getString(3)+"<br>");
 //				}
-				ps = cn.prepareStatement("select * from Bloguser limit 0,1");
+				ps = cn.prepareStatement("select * from Bloguser where name=?");
+				ps.setString(1, username);
 				rs = ps.executeQuery();
 				if(rs.next()){
 					
@@ -114,13 +120,14 @@ public class BlogLogins extends HttpServlet {
 //						out.print("<h3>登录成功！！</h3>");
 //					}
 					if(name.equals(username) && pass.equals(passwords)){
-						out.print("<h3>登录成功！！</h3>");
-						//数据处理的servlet
-						response.sendRedirect("LoginSuccess?name="+name);
+//						out.print("<h3>登录成功！！</h3>");
+//						response.sendRedirect("LoginSuccess?name="+name);
 					}else{
-//						out.println("登录失败");
-						response.sendRedirect("/JSP/Blog.jsp?error=yes");
+						flag=false;
 					}
+				}
+				else{//查数据库查找不到记录
+					flag=false;
 				}
 				
 			}catch(Exception y){
@@ -136,10 +143,32 @@ public class BlogLogins extends HttpServlet {
 				}
 			}
 			
+			if(!flag)
+			  response.sendRedirect("/JSP/Blog.jsp?error=yes");
 			
-			out.print("    This is ");
-			out.print(this.getClass());
-			out.println(", using the POST method");
+			if("auto".equals(auto)){//如果勾选了自动登录的单选框,就创建一个cookie
+				Cookie cookie = new Cookie("Myth","ad");
+				cookie.setMaxAge(60*60);
+				response.addCookie(cookie);
+			}
+//			out.println(auto);
+			out.println("<img src='/JSP/images/Blog2.jpg' style='height: 45px; width: 130px'/>");
+//			out.println(""+username+" 你好");
+			out.println("<form action='Data' method='post' name='po'><table background='/JSP/images/BlogPush2.PNG' width='600px' height='161px' border=0px>");
+			//自己做的，没有使用CSS 实在是不好美化
+//			out.println("<tr>有什么新鲜事想告诉大家？ &nbsp&nbsp&nbsp&nbsp&nbsp  <a href='http://pay.vip.weibo.com/vippay?from=pc140'>会员可以发布超过140字的微博啦，开通会员立即体验 》</a></tr>");
+//			out.println("<tr><td style='height:300px;width: 50px;'>"+"框"+"</td><td><input type='text' name='inputs'style='height:300px;width: 500px;' ></td></tr>");
+//			
+//			out.println("<tr><td></td><td><span>表情&nbsp&nbsp&nbsp&nbsp</span><span>&nbsp&nbsp&nbsp&nbsp图片&nbsp&nbsp&nbsp&nbsp</span><span>&nbsp&nbsp&nbsp&nbsp视频&nbsp&nbsp&nbsp&nbsp</span><span>&nbsp&nbsp&nbsp&nbsp话题"
+//					+ "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><span>&nbsp&nbsp"
+//					+ "<input type='submit' value='发布'></span></td></tr>");
+			
+//			out.println("<img src='/JSP/images/BlogPush2.PNG'>");
+			out.println("<tr><td height=82px;width=580px;><input type='text' name='msg'style='height:86px;width: 580px;margin:30px 0px 0px 7px;'></td></tr>");
+			out.println("<tr><td  valign='bottom' height=28px;width=580px; style='height:28px;width: 580px;'><span onclick='po.submit()'style='margin:0px 0px 0px 500px;cursor:pointer;'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span></td></tr>");
+//			out.println("<tr><td valign='bottom'><span onclick='po.submit()' style='margin:0px 0px 6px 560px;cursor:pointer;width:75px;height:20px'>&nbsp</span></td></tr>");
+			
+			out.println("</table></form>");
 			out.println("  </BODY>");
 			out.println("</HTML>");
 			out.flush();

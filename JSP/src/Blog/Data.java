@@ -1,5 +1,8 @@
 package Blog;
-
+/**
+ * 显示所有各个用户发过的微博  这需要数据库的支持！
+ * 界面急需美化，CSS急需入门！！！
+ */
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -8,12 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class LoginSuccess extends HttpServlet {
+public class Data extends HttpServlet {
 
 	/**
 	 * Constructor of the object.
 	 */
-	public LoginSuccess() {
+	public Data() {
 		super();
 	}
 
@@ -38,17 +41,15 @@ public class LoginSuccess extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		response.setContentType("text/html;charset=utf-8");
+		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		String name = request.getParameter("name");
-		
 		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
 		out.println("<HTML>");
-		out.println("  <HEAD><TITLE>Login Success</TITLE></HEAD>");
+		out.println("  <HEAD><TITLE>A Servlet</TITLE></HEAD>");
 		out.println("  <BODY>");
-		
-		out.println("<h3>用户 "+name+" 你好</h3>");
-		out.println("欢迎登录微博");
+		out.print("    This is ");
+		out.print(this.getClass());
+		out.println(", using the GET method");
 		out.println("  </BODY>");
 		out.println("</HTML>");
 		out.flush();
@@ -68,15 +69,21 @@ public class LoginSuccess extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		response.setContentType("text/html");
+		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
+		request.setCharacterEncoding("utf-8");
+		String msg = request.getParameter("msg");
+		
 		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
 		out.println("<HTML>");
-		out.println("  <HEAD><TITLE>A Servlet</TITLE></HEAD>");
+		out.println("  <HEAD><TITLE>Blog Data</TITLE></HEAD>");
 		out.println("  <BODY>");
-		out.print("    This is ");
-		out.print(this.getClass());
-		out.println(", using the POST method");
+		out.println("<img src='/JSP/images/Blog2.jpg' style='height: 45px; width: 130px'/>");
+		out.println("");
+		out.println("<h2>Myth:</h2><br><p>"+msg+"</p>");
+		out.println("<br>今天 &nbsp"+ new java.util.Date().getHours()+":"+new java.util.Date().getMinutes());
+		out.println("<br>");
+		out.println();
 		out.println("  </BODY>");
 		out.println("</HTML>");
 		out.flush();
