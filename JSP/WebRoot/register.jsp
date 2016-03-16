@@ -5,9 +5,10 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 String error = request.getParameter("error");
 if(error!=null)//如果不加这句话，下面的error对象就会因为没有初始化，而报空指针异常
+{
   if(error.equals("dis"))
     out.println("<h2 >！密码不一致，请重新输入！</h2>");
-  if(error.equals("null"))
+  if(error.equals("isnulls"))
     out.println("<h2 >属性值不能为空</h2>");
   if(error.equals("long"))
     out.println("<h2 >用户名长度过长</h2>");
@@ -15,11 +16,31 @@ if(error!=null)//如果不加这句话，下面的error对象就会因为没有�
     out.println("<h2 >密码不符合规范</h2>");
     if(error.equals("emailmis"))
     out.println("<h2 >邮件地址不符合规范</h2>");
+}
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
+  <script >
+
+  if("<%=error%>" == "dis"){
+    alert("！密码不一致，请重新输入！");
+  }
+  if("<%=error%>" == "isnulls"){
+    alert("属性值不能为空");
+  }
+  if("<%=error%>" == "/JSP/Blog.jsp"){
+    alert("用户名长度过长");
+  }
+  if("<%=error%>" == "dis"){
+    alert("密码不符合规范");
+  }
+  if("<%=error%>" == "dis"){
+    alert("邮件地址不符合规范");
+  }
+
+</script>
     <base href="<%=basePath%>">
     
     <title>用户注册</title>
@@ -60,5 +81,6 @@ if(error!=null)//如果不加这句话，下面的error对象就会因为没有�
      </table>
     </form>
     <h4>注意：用户名不超过20个字符，密码由字母和数字构成，邮件符合规范</h4>
+    <a href='/JSP/Blog.jsp'>返回登录页面</a>
   </body>
 </html>

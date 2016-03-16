@@ -100,33 +100,44 @@ public class AddControl extends HttpServlet {
 		String pass1 = request.getParameter("password1");
 		String pass2 = request.getParameter("password2");
 		
+		//String test = ""; 关于字符串初始值的测试
+		//System.out.println("_"+test+"_");如果
+		//System.out.println("user:_"+user+"_email:_"+email+"_pass1:_"+pass1+"_pass2:_"+pass2);
 
 		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
 		out.println("<HTML>");
 		out.println("  <HEAD><TITLE>Control</TITLE></HEAD>");
 		out.println("  <BODY>");
-		boolean flag = true;
+		boolean flag;
+		flag = true;
 		
-		if(pass1.equals("") || user.equals("") || email.equals("")){//检验是否为空
-			response.sendRedirect("/JSP/register.jsp?error=null");
+		/**以下的是对表单提交的数据进行处理 根据不同的情况来 重定向回去注册页面 */
+		//因为有多个对同一个参数传值的response可能会回复，又因为整个servlet类所有代码都会执行，不能发送 两个 对一个参数的传值的response
+		//所以就要用flag来限定只发送一个对参数error传值的response 所以用书上的参数数组的方法更好
+//		if(pass2==null || pass1==null || user==null || email==null){//检验是否为空
+		if(pass2.equals("") || pass1.equals("") || user.equals("") || email.equals("")){	
+		    response.sendRedirect("/JSP/register.jsp?error=isnulls");
+		    //输出我在表单里面填写的数据 到 控制台
+//			System.out.println("user:_"+user+"_email:_"+email+"_pass1:_"+pass1+"_pass2:_"+pass2);
 			flag=false;
 		}
-		if(!pass1.equals(pass2)){//密码一致性检验
+		if(!pass1.equals(pass2) && flag){//密码一致性检验
 			response.sendRedirect("/JSP/register.jsp?error=dis");
 			flag=false;
 		}
-		if(user.getBytes().length>20){//名称长度过长检验
+		if(user.getBytes().length>20 && flag){//名称长度过长检验
 			response.sendRedirect("/JSP/register.jsp?error=long");
 			flag=false;
 		}
-		if(Email(email)){//名称长度过长检验
+		if(Email(email) && flag){//名称长度过长检验
 			response.sendRedirect("/JSP/register.jsp?error=emailmis");
 			flag=false;
 		}
-		if(isStrong(pass1)){//密码长度以及强度检验
+		if(isStrong(pass1) && flag){//密码长度以及强度检验
 			response.sendRedirect("/JSP/register.jsp?error=passmis");
 			flag=false;
 		}
+		
 		if(flag){
 		
 			Connection cn = null;
@@ -154,6 +165,8 @@ public class AddControl extends HttpServlet {
 				
 				if(ps.executeUpdate()==1){
 					out.println("<h2>注册成功</h2>");
+					out.println("<h3>尊敬的 "+user+" 用户，欢迎您的到来</h3>");
+					out.println("<a href='/JSP/Blog.jsp'>返回登录页面</a>");
 				}else{
 					out.println("<h2>注册失败</h2>");
 					out.println("<p>未填写邮件或邮件格式不正确</p>");
@@ -198,7 +211,7 @@ public class AddControl extends HttpServlet {
 		return email==null || !email.matches("^[_a-z0-9-]+([.][_a-z0-9-]+)*@[a-z0-9-]+([.][a-z0-9-]+)*$*");
 		// ^ 表示字符串 开始 的定位符 
 		// $ 表示字符串 结束 的定位符
-		// * + ? 都是后缀修饰符，表示匹配前面的子表达式 零个或多个
+		// * + ? 都是限定符(相当于后缀修饰符)，表示匹配前面的子表达式 零个或多个
 		// () 标记一个子表达式的开始和结束 
 		// [] 标记一个中括号表达式的开始和结束
 		/**所以最终的结果是：
