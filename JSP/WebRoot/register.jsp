@@ -4,7 +4,7 @@ request.setCharacterEncoding("utf-8");//设置接受中文的语句
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 String error = request.getParameter("error");
-if(error!=null)//如果不加这句话，下面的error对象就会因为没有初始化，而报空指针异常
+/* if(error!=null)//如果不加这句话，下面的error对象就会因为没有初始化，而报空指针异常
 {
   if(error.equals("dis"))
     out.println("<h2 >！密码不一致，请重新输入！</h2>");
@@ -16,7 +16,7 @@ if(error!=null)//如果不加这句话，下面的error对象就会因为没有�
     out.println("<h2 >密码不符合规范</h2>");
     if(error.equals("emailmis"))
     out.println("<h2 >邮件地址不符合规范</h2>");
-}
+} */
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -36,7 +36,7 @@ if(error!=null)//如果不加这句话，下面的error对象就会因为没有�
   if("<%=error%>" == "dis"){
     alert("密码不符合规范");
   }
-  if("<%=error%>" == "dis"){
+  if("<%=error%>" == "emailmis"){
     alert("邮件地址不符合规范");
   }
 
