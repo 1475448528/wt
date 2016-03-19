@@ -6,26 +6,43 @@ String error = request.getParameter("error");
 //if(error!=null)
   //if(error.equals("yes"))
      //out.print("<h1>用户名或密码错误！！</h1>");
-/* Cookie[] cookies = request.getCookies();
-if(cookies !=null)
-for(Cookie cookie:cookies){
-    String name = cookie.getName();
-    String value = cookie.getValue();
-    if("Myth".equals(name) && "ad".equals(value)){
-      request.setAttribute(name, value);
-      System.out.println("myth");
-      response.sendRedirect("servlet/BlogLogins");
-    }
-    //response.sendRedirect("/JSP/Blog.jsp");
-} */
+Cookie[] cookies = request.getCookies();
+ int i = 0;
+   if(cookies !=null && error==null )
+		for(Cookie cookie:cookies){
+		  i++;
+		  if(! cookie.getName().equals("JSESSIONID")){
+		    String name = cookie.getName();
+		    String value = cookie.getValue();
+		    System.out.print("\n的第"+i+"次是:"+name+"-"+value+"\n");
+		    
+		    if("Myth".equals(name) && "ad".equals(value)){
+		      request.setAttribute(name, value);
+		      //要使用forward才能把request的属性发过去，使用重定向的话，request就不会发过去了
+		      request.getRequestDispatcher("servlet/BlogLogins?name="+name+"").forward(request, response);
+		      //手贱  加上单引号干嘛，又不是数据库！
+		      //response.sendRedirect("servlet/BlogLogins");
+		      return;
+		    }else{
+		   //response.sendRedirect("/JSP/Blog.jsp?error=1");
+		    System.out.print("\n获取失败");
+		    }
+		}else{
+		 System.out.print("\n第"+i+"次获取到的是Session");
+		 //continue; // 如果break了就只获取了一次cookie就退出了不再获取了
+		}
+	}
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <script >
 
-  if("<%=error%>" == "yes"){
-    alert("用户名或密码错误！！");
+  if("<%=error%>" == "yes" ){
+     alert("用户名或密码错误！！");
+    /* 显示不了，因为后面一直在重定向  */
+    <%if(error!=null) response.sendRedirect("/JSP/Blog.jsp");%>
+    
   }
 </script>
   <head>
@@ -41,12 +58,13 @@ for(Cookie cookie:cookies){
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
+	<link rel="stylesheet" type="text/css" href="css/font.css">
 
   </head>
   
   <body>
   <form action="servlet/BlogLogins"method="post" name ="logins">
-    <table background="images/Zhou.jpgs" width="800px" height="200px"> 
+    <table class="login" background="images/Zhou.jpgs" width="800px" height="200px" > 
     <tr>
     <td></td>
     <td><span><img src="images/Blog2.jpg"style="height: 140px; width: 398px"/></span><td>
@@ -55,10 +73,10 @@ for(Cookie cookie:cookies){
     
      <tr> 
         <td style="width: 220px; "></td>
-        <td style="height: 44px; ">User:<input type="text" name="user" style="width: 160px; "></td>
+        <td style="height: 44px; " >User:<input type="text" name="user" style="width: 160px; "></td>
         <td></td>
      </tr>
-      <tr> 
+      <tr > 
       <td></td>
         <td style="height: 44px; ">Pass:<input type="password" name="password" style="width: 160px; "></td>
         <td></td>
@@ -72,8 +90,8 @@ for(Cookie cookie:cookies){
       </tr>
       <tr> 
       <td></td>
-        <td style="height: 63px; "><span><input type="button" value="Register" onclick="javascript:window.location.href='/JSP/register.jsp';" style="height: 30px; width: 60px; margin:0px 0px 6px 40px;cursor:pointer;">
-       <input type="submit"  value="Login" style="height: 30px; width: 60px; margin:0px 0px 6px 30px;cursor:pointer;"></span></td><!-- background: url(images/qq.gif) -->
+        <td style="height: 63px; "><span><input type="button" value="Register" onclick="javascript:window.location.href='/JSP/register.jsp';" style="height: 30px; width: 60px; margin:0px 0px 6px 40px;cursor:pointer;"class="button">
+       <input type="submit"  value="Login" style="height: 30px; width: 60px; margin:0px 0px 6px 30px;cursor:pointer;"class="button"></span></td><!-- background: url(images/qq.gif) -->
        <td></td>
       </tr>
       

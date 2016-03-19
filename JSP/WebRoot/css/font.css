@@ -1,0 +1,12 @@
+.font{
+	font-size:9px;
+}
+.login{
+	font-size:16px;
+	/* background:green; */
+}
+.button{
+	font-family:"Microsoft Yahei";
+	font-size:13px;
+	text-align:left;
+}
