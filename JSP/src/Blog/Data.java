@@ -46,19 +46,20 @@ public class Data extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
-		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
-		out.println("<HTML>");
-		out.println("  <HEAD><TITLE>A Servlet</TITLE></HEAD>");
-		out.println("  <BODY>");
-		out.print("    This is ");
-		out.print(this.getClass());
-		out.println(", using the GET method");
-		out.println("  </BODY>");
-		out.println("</HTML>");
-		out.flush();
-		out.close();
+		doPost(request, response);
+//		response.setContentType("text/html");
+//		PrintWriter out = response.getWriter();
+//		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
+//		out.println("<HTML>");
+//		out.println("  <HEAD><TITLE>A Servlet</TITLE></HEAD>");
+//		out.println("  <BODY>");
+//		out.print("    This is ");
+//		out.print(this.getClass());
+//		out.println(", using the GET method");
+//		out.println("  </BODY>");
+//		out.println("</HTML>");
+//		out.flush();
+//		out.close();
 	}
 
 	/**
@@ -80,8 +81,11 @@ public class Data extends HttpServlet {
 		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
 		out.println("<HTML>");
 		out.println("  <HEAD><TITLE>Blog Data</TITLE></HEAD>");
+		out.println("<link href='css/font.css'rel='stylesheet' type='text/css' />");
 		out.println("  <BODY>");
+		
 		out.println("<img src='/JSP/images/Blog2.jpg' style='height: 45px; width: 130px'/>");
+		out.print("<a href='/JSP/Suecces.jsp'>首页</a><a href='Data'>刷新</a>");
 		/** 这里的用户名还没有解决，感觉是使用Session来完成功能*/
 //		String username = "Myth";
 		String msg = request.getParameter("msg");
@@ -91,22 +95,52 @@ public class Data extends HttpServlet {
 		//得到和request相关联的session，如果没有就创建一个
 		HttpSession pu = request.getSession(true);
 		String name = (String)pu.getAttribute("name");//获取登陆的用户名
+		//分页的属性
+		int pageSize = 4;//一页显示几条记录
+		int pageNow = 1;//希望显示第几页
+		int rowCount = 0;//一共有几条记录(查表)
+		int pageCount = 0;//一共有几页
 		
+				/**为了给四个参数初始化 做的查询操作*/
+				rs = h.SelectAll("select count(*) from data where user='"+name+"'");
+				try {
+					if(rs.next()){
+						rowCount = rs.getInt(1);
+						System.out.println("总共有："+rowCount+"行记录");
+					}
+					if(rowCount%pageSize == 0){//计算有多少页
+						pageCount = rowCount/pageSize;
+					}else{
+						pageCount = rowCount/pageSize+1;
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+		
+		System.out.println("msg:"+msg);
 		boolean y=false;
-		if(msg!=null){
-		   y= h.updSQL("insert into data values('"+name+"','"+msg+"',curdate(),curtime())");
-		}else{
-			response.sendRedirect("/JSP/Suecces.jsp");
-		}
-		if(y) System.out.println("成功插入");
-		else System.out.println("插入记录失败");
+		if(msg!=null)
+			if(msg.length()>=1){
+			   y= h.updSQL("insert into data values('"+name+"','"+msg+"',curdate(),curtime())");
+			}else{
+				response.sendRedirect("/JSP/Suecces.jsp?error=nulls");
+			}
+//		if(y) System.out.println("成功插入");
+//		else System.out.println("插入记录失败");
 		
 		String [] info = new String[30];
 		String [] date = new String[30];
 		String [] time = new String[30];
+/**接收参数 来控制显示第几个页面*/
+		String page = request.getParameter("pagenow");
+		if(page!=null){
+			pageNow =Integer.parseInt(page);
+		}
 		
-		
-		rs = h.SelectAll("select * from data where user='"+name+"' order by Pushdate desc,time desc");
+		//分页的查询记录
+		if((rowCount-(pageNow-1)*pageSize)< pageSize)pageSize=(rowCount-(pageNow-1)*pageSize);
+		rs = h.SelectAll("select * from data where user='"+name+"' order by Pushdate desc,time desc limit "+(2*pageNow-2)+","+(pageSize)+"");
 		int i=0;
 		try {
 			int u=0;
@@ -123,10 +157,15 @@ public class Data extends HttpServlet {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally{
+			try{
+			if(rs!=null) rs.close();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 		}
+
 		
-		
-		out.println("");
 		for(int k=0;k<info.length ;k++){
 			
 			String msgs = info[k];
@@ -134,7 +173,7 @@ public class Data extends HttpServlet {
 			String times = time[k];
 			
 			if(msgs!=null){
-		        out.println("<div style='border:1px solid green;'><h4>"+name+":</h4><br><p >&nbsp;&nbsp;&nbsp;&nbsp;"+msgs+"</p>");
+		        out.println("<div style='border:1px solid green;'><strong>"+name+":</strong><br><p >&nbsp;&nbsp;&nbsp;&nbsp;"+msgs+"</p>");
 //		        System.out.println((dates.substring(8, 10)).equals(new java.util.Date().getDate()+""));
 		        if((dates.substring(8, 10)).equals(new java.util.Date().getDate()+""))
 		            out.println("<span style='margin:0px 0px 0px 1000px'>今天: &nbsp "+times+"</span></div><br />");
@@ -146,7 +185,16 @@ public class Data extends HttpServlet {
 		}
 		
 		out.println("<br>");
-		out.println();
+		out.println("<a href='Data?pagenow=1'>第一页</a>");
+		for(int k=1;k<pageCount;k++){
+			out.println("<a href='Data?pagenow="+(k+1)+"'>["+(k+1)+"]</a>");
+		}
+		if(pageNow<pageCount){
+			out.println("<a href='Data?pagenow="+(pageNow+1)+"'>下一页</a>");
+		}else{
+			out.println("<a href='Data?pagenow="+pageNow+"'>最后一页</a>");
+		}
+		
 		out.println("  </BODY>");
 		out.println("</HTML>");
 		out.flush();
@@ -161,8 +209,5 @@ public class Data extends HttpServlet {
 	public void init() throws ServletException {
 		// Put your code here
 	}
-
-	public void timesort(String [] date){
-		
-	}
+	
 }

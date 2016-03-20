@@ -182,10 +182,12 @@ public class BlogLogins extends HttpServlet {
 			System.out.println("登录失败");
 		  response.sendRedirect("/JSP/Blog.jsp?error=yes");//比对身份和密码
 		}
+		
+/**创建一个Cookie*/
 		if("auto".equals(auto)){//如果勾选了自动登录的单选框,就创建一个cookie
 			Cookie cookie = new Cookie("Myth","ad");//键值对
 			cookie.setPath("/");//困扰了几天之久的cookie 终于解决了，是的没错，又是路径问题！！！
-			cookie.setMaxAge(60*60);
+			cookie.setMaxAge(5*60);//单位是Second 秒
 			response.addCookie(cookie);
 			request.setAttribute("Myth", "ad");
 			System.out.println("\nCookie创建成功");
@@ -199,7 +201,8 @@ public class BlogLogins extends HttpServlet {
 		pu.setAttribute("name", username);
 		//指定时间是30s 是没有动浏览器的时间，而不是一创建后开始计时的20s
 		pu.setMaxInactiveInterval(200);
-		System.out.println("ID:"+pu.getId());
+		//输出id 就会发现，该Session是保存在cookie里的
+//		System.out.println("ID:"+pu.getId());
 		
 		out.println(auto);
 		if(flag){//因为所有代码都会执行，除非是return了，所以在已经重定向后，是不能再进行forward引用的
