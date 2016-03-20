@@ -66,5 +66,6 @@ String error = request.getParameter("error");
      <a href='Blog.jsp?error=logout'>注销</a>
      <a href='Blog.jsp'>登录</a>
       <a href='servlet/Data'>全部动态</a>
+      <a href='servlet/Data?user=me'>个人主页</a>
   </body>
 </html>

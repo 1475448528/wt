@@ -35,7 +35,7 @@ public class SqlHelper {
 			//不能关闭
 //			this.closeAll();
 		}
-//		System.out.println("返回的："+rs);
+		System.out.println("做了一次查询操作");
 		return rs;
 	}
 /**把增删改 合在一起*/
