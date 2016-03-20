@@ -3,6 +3,7 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 String error = request.getParameter("error");
+
 //if(error!=null)
   //if(error.equals("yes"))
      //out.print("<h1>用户名或密码错误！！</h1>");
@@ -17,6 +18,10 @@ Cookie[] cookies = request.getCookies();
 		    System.out.print("\n的第"+i+"次是:"+name+"-"+value+"\n");
 		    
 		    if("Myth".equals(name) && "ad".equals(value)){
+			    if("logout".equals(error)){
+	               //cookie.setMaxAge(0);  这句话是不起作用的，因为cookie在创建之前才设定好时间，创建后就！！
+	               //System.out.println("删除");
+	            }
 		      request.setAttribute(name, value);
 		      //要使用forward才能把request的属性发过去，使用重定向的话，request就不会发过去了
 		      request.getRequestDispatcher("servlet/BlogLogins?name="+name+"").forward(request, response);
@@ -41,7 +46,7 @@ Cookie[] cookies = request.getCookies();
   if("<%=error%>" == "yes" ){
      alert("用户名或密码错误！！");
     /* 显示不了，因为后面一直在重定向  */
-    <%if(error!=null) response.sendRedirect("/JSP/Blog.jsp");%>
+    <%if(error!=null&&!"logout".equals(error)) response.sendRedirect("/JSP/Blog.jsp");%>
     
   }
 </script>
