@@ -85,10 +85,12 @@ public class Data extends HttpServlet {
 		out.println("  <BODY>");
 		
 		out.println("<img src='/JSP/images/Blog2.jpg' style='height: 45px; width: 130px'/>");
-		out.print("<a href='/JSP/Suecces.jsp'>首页</a><a href='Data'>刷新</a>");
+		
 		/** 这里的用户名还没有解决，感觉是使用Session来完成功能*/
 //		String username = "Myth";
 		String msg = request.getParameter("msg");
+		String who = request.getParameter("user");
+		System.out.println(who);
 		SqlHelper h = new SqlHelper();
 		ResultSet rs = null;
 		/**使用Session来传递用户名*/
@@ -96,17 +98,21 @@ public class Data extends HttpServlet {
 		HttpSession pu = request.getSession(true);
 		String name = (String)pu.getAttribute("name");//获取登陆的用户名
 		//分页的属性
-		int pageSize = 4;//一页显示几条记录
+		int pageSize = 3;//一页显示几条记录
 		int pageNow = 1;//希望显示第几页
 		int rowCount = 0;//一共有几条记录(查表)
 		int pageCount = 0;//一共有几页
 		
-				/**为了给四个参数初始化 做的查询操作*/
-				rs = h.SelectAll("select count(*) from data where user='"+name+"'");
+/**为了给四个参数初始化 做的查询操作 where user='"+name+"'*/
+				String total = "select count(*) from data ";
+				if("me".equals(who)){
+					total += "where user='"+name+"'";
+				}
+				rs = h.SelectAll(total);
 				try {
 					if(rs.next()){
 						rowCount = rs.getInt(1);
-						System.out.println("总共有："+rowCount+"行记录");
+//						System.out.println("总共有："+rowCount+"行记录");
 					}
 					if(rowCount%pageSize == 0){//计算有多少页
 						pageCount = rowCount/pageSize;
@@ -118,7 +124,7 @@ public class Data extends HttpServlet {
 					e1.printStackTrace();
 				}
 		
-		System.out.println("msg:"+msg);
+//		System.out.println("msg:"+msg);
 		boolean y=false;
 		if(msg!=null)
 			if(msg.length()>=1){
@@ -132,20 +138,44 @@ public class Data extends HttpServlet {
 		String [] info = new String[30];
 		String [] date = new String[30];
 		String [] time = new String[30];
+		String [] user = new String[30];
 /**接收参数 来控制显示第几个页面*/
 		String page = request.getParameter("pagenow");
 		if(page!=null){
-			pageNow =Integer.parseInt(page);
+			pageNow = Integer.parseInt(page);
 		}
 		
 		//分页的查询记录
-		if((rowCount-(pageNow-1)*pageSize)< pageSize)pageSize=(rowCount-(pageNow-1)*pageSize);
-		rs = h.SelectAll("select * from data where user='"+name+"' order by Pushdate desc,time desc limit "+(2*pageNow-2)+","+(pageSize)+"");
+		if((rowCount-(pageNow-1)*pageSize)< pageSize)   pageSize=(rowCount-(pageNow-1)*pageSize);
+//		where user='"+name+"'
+		String all="select * from data ";
+		if("me".equals(who)){
+			all += "where user='"+name+"'order by Pushdate desc,time desc limit ";
+		}else{
+			all +="order by Pushdate desc,time desc limit ";
+		}
+		if(pageNow==1){//解决最后一条和第一条重复问题
+			all += (2*pageNow-2)+","+(pageSize)+"";
+			System.out.println(all);
+			rs = h.SelectAll(all);
+		}else{
+			all += (2*pageNow-1)+","+(pageSize)+"";
+			rs = h.SelectAll(all);
+		}
+		if("me".equals(who)){
+			who="&user=me";
+		}else{
+			who="";
+		}
+//		System.out.println("刷新前接收到的who:"+who);
+		out.print("<a href='/JSP/Suecces.jsp'>返回</a><a href='Data?pagenow="+pageNow+""+who+"'>刷新</a>");
+		//"<a href='Data?pagenow=1"+who+"'>首页</a>"
 		int i=0;
 		try {
 			int u=0;
 			while(rs.next()){
 				u++;
+				user[i] = rs.getString(1);
 				info[i] = rs.getString(2);
 				date[i] = rs.getString(3);
 				time[i] = rs.getString(4);
@@ -166,14 +196,14 @@ public class Data extends HttpServlet {
 		}
 
 		
-		for(int k=0;k<info.length ;k++){
-			
+		for(int k=0;k<info.length ;k++){//显示所有数据
+			String users = user[k];
 			String msgs = info[k];
 			String dates = date[k];
 			String times = time[k];
 			
 			if(msgs!=null){
-		        out.println("<div style='border:1px solid green;'><strong>"+name+":</strong><br><p >&nbsp;&nbsp;&nbsp;&nbsp;"+msgs+"</p>");
+		        out.println("<div style='border:1px solid green;'><strong>"+users+":</strong><br><p>&nbsp;&nbsp;&nbsp;&nbsp;"+msgs+"</p>");
 //		        System.out.println((dates.substring(8, 10)).equals(new java.util.Date().getDate()+""));
 		        if((dates.substring(8, 10)).equals(new java.util.Date().getDate()+""))
 		            out.println("<span style='margin:0px 0px 0px 1000px'>今天: &nbsp "+times+"</span></div><br />");
@@ -185,14 +215,22 @@ public class Data extends HttpServlet {
 		}
 		
 		out.println("<br>");
-		out.println("<a href='Data?pagenow=1'>第一页</a>");
-		for(int k=1;k<pageCount;k++){
-			out.println("<a href='Data?pagenow="+(k+1)+"'>["+(k+1)+"]</a>");
+		
+		
+		out.println("当前是第"+pageNow+"页<br />");
+		out.println("<a href='Data?pagenow=1"+who+"'>首页</a>");
+		if(pageNow!=1){
+			out.println("<a href='Data?pagenow="+(pageNow-1)+""+who+"'>上一页</a>");
 		}
+		for(int k=pageNow;k<pageCount && k<pageNow+5;k++){//显示多少个链接页面
+			out.println("<a href='Data?pagenow="+(k+1)+""+who+"'>["+(k+1)+"]</a>");
+		}
+		
+		
 		if(pageNow<pageCount){
-			out.println("<a href='Data?pagenow="+(pageNow+1)+"'>下一页</a>");
+			out.println("<a href='Data?pagenow="+(pageNow+1)+""+who+"'>下一页</a>");
 		}else{
-			out.println("<a href='Data?pagenow="+pageNow+"'>最后一页</a>");
+			out.println("<a href='Data?pagenow="+pageNow+""+who+"'>末页</a>");
 		}
 		
 		out.println("  </BODY>");
